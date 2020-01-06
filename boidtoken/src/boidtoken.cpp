@@ -420,7 +420,7 @@ ACTION boidtoken::stake(
         account_type = "liquid";
     }
     //to delete entries from delegation and stake tables
-    deletetab(from, st.issuer);
+    deletetab(from);
 
     memo = "account:  " + from.to_string() +
            " using " + account_type + " balance"
@@ -444,8 +444,7 @@ ACTION boidtoken::sendmessage(name acct, string memo)
     print(memo);
 }
 
-void boidtoken::deletetab(name account,
-                          name ram_payer)
+void boidtoken::deletetab(name account)
 {
     delegation_t deleg_t(get_self(), account.value);
     auto deleg = deleg_t.begin();
@@ -659,7 +658,7 @@ ACTION boidtoken::claim(
         }
     }
     //to delete entries from delegation and stake tables
-    deletetab(stake_account, ram_payer);
+    deletetab(stake_account);
 
     // Find power bonus and update power and claim parameters
     if (a_itr != accts.end())
@@ -888,7 +887,7 @@ ACTION boidtoken::unstake(
         sub_stake(from, to, quantity, expiration_time, from, transfer);
     }
     //to delete entries from delegation and stake tables
-    deletetab(from, st.issuer);
+    deletetab(from);
 }
 
 /* Initialize config table

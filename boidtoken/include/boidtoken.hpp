@@ -516,8 +516,7 @@ private:
     asset get_balance(
         name account);
     //to delete delegation and stake table entries with quantity and trans_quantity both zero
-    void deletetab(name account,
-                   name ram_payer);
+    void deletetab(name account);
 };
 
 float boidtoken::update_boidpower(
