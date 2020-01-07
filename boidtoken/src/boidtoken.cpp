@@ -711,12 +711,12 @@ ACTION boidtoken::claim(
                       "\nreturning " + expired_received_tokens.to_string() + " expired tokens" +
                       "\nreceiving " + expired_delegated_tokens.to_string() + " delegated tokens";
 
-        // action(
-        //     permission_level{st.issuer, "active"_n},
-        //     get_self(),
-        //     "issue"_n,
-        //     std::make_tuple(stake_account, "1.0000 BOID", memo))
-        //     .send();
+        action(
+            permission_level{st.issuer, "active"_n},
+            get_self(),
+            "issue"_n,
+            std::make_tuple(stake_account, self_payout, memo))
+            .send();
 
         int64_t self_stake_payout_amount =
             (int64_t)(percentage_to_stake / 100) * self_payout.amount;
