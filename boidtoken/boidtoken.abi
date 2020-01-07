@@ -217,6 +217,16 @@
             ]
         },
         {
+            "name": "deletetab",
+            "base": "",
+            "fields": [
+                {
+                    "name": "account",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "erasestakes",
             "base": "",
             "fields": []
@@ -832,6 +842,11 @@
         {
             "name": "create",
             "type": "create",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "deletetab",
+            "type": "deletetab",
             "ricardian_contract": ""
         },
         {

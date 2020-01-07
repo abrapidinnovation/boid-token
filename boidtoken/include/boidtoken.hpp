@@ -210,6 +210,8 @@ public:
     ACTION resetbonus(const name account);
 
     ACTION resetpowtm(const name account, bool bonus);
+    //to delete delegation and stake table entries with quantity and trans_quantity both zero
+    ACTION deletetab(name account);
 
     /*
     ACTION emplacestake(
@@ -515,8 +517,6 @@ private:
 
     asset get_balance(
         name account);
-    //to delete delegation and stake table entries with quantity and trans_quantity both zero
-    void deletetab(name account);
 };
 
 float boidtoken::update_boidpower(

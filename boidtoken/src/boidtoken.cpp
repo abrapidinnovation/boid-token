@@ -385,7 +385,7 @@ ACTION boidtoken::stake(
     //  2) has sufficient staked, undelegated balance && not staking to self
     if (use_staked_balance)
     {
-
+        print("voila");
         check(
             deleg != deleg_t.end() &&
                 quantity <= deleg->quantity,
@@ -421,7 +421,6 @@ ACTION boidtoken::stake(
     }
     //to delete entries from delegation and stake tables
     deletetab(from);
-
     memo = "account:  " + from.to_string() +
            " using " + account_type + " balance"
                                       "\naction: stake" +
@@ -448,23 +447,29 @@ void boidtoken::deletetab(name account)
 {
     delegation_t deleg_t(get_self(), account.value);
     auto deleg = deleg_t.begin();
-    check(deleg != deleg_t.end(), "Deleg does not exist");
     while (deleg != deleg_t.end())
     {
         if (deleg->trans_quantity.amount == 0 && deleg->quantity.amount == 0)
         {
             deleg = deleg_t.erase(deleg);
         }
+        else
+        {
+            deleg++;
+        }
     }
 
     stake_t s_t(get_self(), account.value);
     auto to_itr = s_t.begin();
-    check(to_itr != s_t.end(), "Stake does not exist");
     while (to_itr != s_t.end())
     {
         if (to_itr->trans_quantity.amount == 0 && to_itr->quantity.amount == 0)
         {
             to_itr = s_t.erase(to_itr);
+        }
+        else
+        {
+            to_itr++;
         }
     }
 }
@@ -478,7 +483,7 @@ ACTION boidtoken::claim(
     float percentage_to_stake,
     bool issuer_claim)
 {
-    // print("claim \n");
+    print("claim \n");
     config_t c_t(get_self(), get_self().value);
     auto c_itr = c_t.find(0);
     check(c_itr != c_t.end(), "Must first initstats");
@@ -719,7 +724,6 @@ ACTION boidtoken::claim(
         if (self_stake_payout_amount > 0 ||
             self_stake_payout_amount >= c_itr->min_stake.amount)
         {
-
             add_stake(stake_account, stake_account, self_stake_payout, self_expiration, ram_payer, false);
         }
         if (ram_payer == st.issuer)
@@ -768,7 +772,7 @@ ACTION boidtoken::unstake(
     //check(!to_staked_balance, "unstake to stake balance temporarily unavailable");
     //check(!transfer, "unstake for transfers temporarily unavailable");
 
-    print("unstake\n");
+    // print("unstake\n");
     config_t c_t(get_self(), get_self().value);
     auto c_itr = c_t.find(0);
     check(c_itr != c_t.end(), "Must first initstats");
@@ -888,6 +892,7 @@ ACTION boidtoken::unstake(
     }
     //to delete entries from delegation and stake tables
     deletetab(from);
+    deletetab(to);
 }
 
 /* Initialize config table
@@ -896,12 +901,9 @@ ACTION boidtoken::initstats(bool wpf_reset)
 {
     print("initstats\n");
     require_auth(get_self());
-    print("here");
 
     config_t c_t(get_self(), get_self().value);
-    print("gottable");
     auto c_itr = c_t.find(0);
-    print("condition-->", c_itr == c_t.end());
     auto sym = symbol("BOID", 4);
     asset cleartokens = asset{0, sym};
 
